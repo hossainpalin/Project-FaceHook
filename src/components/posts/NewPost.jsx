@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
+import useAvatar from '../../hooks/useAvatar';
+import useNameAvatar from '../../hooks/useNameAvatar';
+import useProfile from '../../hooks/useProfile';
 import PostEntry from './PostEntry';
 
 export default function NewPost() {
   const [showPostEntry, setShowPostEntry] = useState(false);
+  const { avatarUrl } = useAvatar();
+  const { state } = useProfile();
   const { auth } = useAuth();
+  const user = state?.user ?? auth?.user;
+  const nameAvatar = useNameAvatar();
 
   return (
     <>
@@ -15,7 +22,7 @@ export default function NewPost() {
           <div className="flex-center mb-3 gap-2 lg:gap-4">
             <img
               className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
-              src={`${import.meta.env.VITE_SERVER_BASE_URL}/${auth?.user?.avatar}`}
+              src={user?.avatar === null ? nameAvatar : avatarUrl}
               alt="avatar"
             />
 

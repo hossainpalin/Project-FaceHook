@@ -3,7 +3,7 @@ import CommentIcon from '../../assets/icons/comment.svg';
 import LikeFilledIcon from '../../assets/icons/like-filled.svg';
 import LikeIcon from '../../assets/icons/like.svg';
 import ShareIcon from '../../assets/icons/share.svg';
-import { useAuth } from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import useAxios from '../../hooks/useAxios';
 
 export default function PostAction({ post }) {

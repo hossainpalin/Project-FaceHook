@@ -1,4 +1,4 @@
-function getLetters(name) {
+function getInitialLetters(name) {
   let letters;
   const nameSplit = name.split(' ');
   const nameLength = nameSplit.length;
@@ -12,9 +12,18 @@ function getLetters(name) {
   return letters.toUpperCase();
 }
 
-export function getInitialImage(name, color) {
+export const getRandomBgColor = () => {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+export function getInitialAvatar(name, color) {
   if (name == null) return;
-  name = getLetters(name);
+  name = getInitialLetters(name);
 
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -34,12 +43,3 @@ export function getInitialImage(name, color) {
 
   return canvas.toDataURL();
 }
-
-export const getRandomColor = () => {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};

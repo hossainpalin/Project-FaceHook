@@ -1,14 +1,17 @@
 import { useRef } from 'react';
 import { actions } from '../../actions';
 import EditIcon from '../../assets/icons/edit.svg';
+import useAvatar from '../../hooks/useAvatar';
 import useAxios from '../../hooks/useAxios';
 import useProfile from '../../hooks/useProfile';
-import { getRandomColor } from '../../utils/getInitialImage';
+import useNameAvatar from '../../hooks/useNameAvatar';
 
 export default function ProfileImage() {
   const { state, dispatch } = useProfile();
   const { api } = useAxios();
   const fileUploadRef = useRef(null);
+  const { avatarUrl } = useAvatar();
+  const nameAvatar = useNameAvatar()
 
   const handleImageUpload = (e) => {
     e.preventDefault();
@@ -44,7 +47,7 @@ export default function ProfileImage() {
       <div className="w-full h-full rounded-full overflow-hidden">
         <img
           className="w-full h-full object-cover"
-          src={state?.user?.avatar}
+          src={state?.user?.avatar === null ? nameAvatar : avatarUrl}
           alt="Avatar"
         />
       </div>

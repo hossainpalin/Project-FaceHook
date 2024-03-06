@@ -4,9 +4,10 @@ import ThreeDotIcon from '../../assets/icons/3dots.svg';
 import DeleteIcon from '../../assets/icons/delete.svg';
 import EditIcon from '../../assets/icons/edit.svg';
 import TimeIcon from '../../assets/icons/time.svg';
-import { useAuth } from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import useAvatar from '../../hooks/useAvatar';
 import useAxios from '../../hooks/useAxios';
+import useNameAvatar from '../../hooks/useNameAvatar';
 import usePost from '../../hooks/usePost';
 import { getDateDifferenceFromNow } from '../../utils';
 
@@ -15,8 +16,9 @@ export default function PostHeader({ post }) {
   const { avatarUrl } = useAvatar(post);
   const { auth } = useAuth();
   const isMe = post?.author?.id === auth?.user?.id;
-  const { api } = useAxios;
+  const { api } = useAxios();
   const { dispatch } = usePost();
+  const nameAvatar = useNameAvatar();
 
   const handleDeletePost = async () => {
     dispatch({ type: actions.post.DATA_FETCHING });
@@ -39,7 +41,11 @@ export default function PostHeader({ post }) {
       <div className="flex items-center gap-3">
         <img
           className="max-w-10 max-h-10 rounded-full lg:max-h-[58px] lg:max-w-[58px]"
-          src={avatarUrl}
+          src={
+            isMe && (post?.author?.avatar ?? auth?.user?.avatar) === null
+              ? nameAvatar
+              : avatarUrl
+          }
           alt="avatar"
         />
         <div>
