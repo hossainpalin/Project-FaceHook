@@ -24,20 +24,36 @@ export default function PostEntry({ onCreate }) {
     formState: { errors },
   } = useForm();
 
-  const handlePostSubmit = async (formData) => {
+  const handlePostSubmit = async (values) => {
+    const formData = new FormData();
+    // append image
+    for (const file of values.image) {
+      formData.append('image', file);
+    }
+    // append content
+    formData.append('content', values.content);
+
     dispatch({ type: actions.post.DATA_FETCHING });
 
     try {
       const response = await api.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/posts`,
-        { formData },
+        formData,
       );
+
       if (response.status === 200) {
-        dispatch({ type: actions.post.DATA_CREATED, data: response.data });
+        dispatch({
+          type: actions.post.DATA_CREATED,
+          data: response.data,
+        });
         onCreate();
       }
     } catch (error) {
-      dispatch({ type: actions.post.DATA_FETCH_ERROR, error: error.message });
+      console.error(error);
+      dispatch({
+        type: actions.post.DATA_FETCH_ERROR,
+        error: error.message,
+      });
     }
   };
 
@@ -70,7 +86,13 @@ export default function PostEntry({ onCreate }) {
             <img src={AddPhoto} alt="Add Photo" />
             Add Photo
           </label>
-          <input type="file" name="photo" id="photo" className="hidden" />
+          <input
+            {...register('image')}
+            type="file"
+            name="photo"
+            id="photo"
+            className="hidden"
+          />
         </div>
 
         <Field label="" error={errors.content}>

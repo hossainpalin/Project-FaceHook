@@ -16,7 +16,7 @@ export default function RegistrationForm() {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/auth/register`,
-        { formData },
+        formData,
       );
       if (response.status === 201) {
         navigate('/login');
